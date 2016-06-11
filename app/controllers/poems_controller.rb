@@ -3,7 +3,7 @@ class PoemsController < ApplicationController
     service = TwitterService.new
     results = service.text_from_query(params[:query])
 
-    @poem = Poem.new("sample_title", results)
+    @poem = Poem.new(results)
 
     render :show, :status => :created
   end

@@ -6,11 +6,9 @@ RSpec.describe PoemsController, type: :controller do
       allow_any_instance_of(TwitterService).to receive(:text_from_query).and_return("tweeted stuff")
       post :create, :query => "#ruby" 
 
+      expect(response).to have_http_status(:created)
       poem = assigns(:poem)
       expect(poem).to be_a(Poem)
-
-      expect(poem.title).to_not be_nil
-      expect(poem.body).to eq("tweeted stuff")
     end
   end
 end
