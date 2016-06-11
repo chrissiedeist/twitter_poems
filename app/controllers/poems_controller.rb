@@ -1,11 +1,10 @@
 class PoemsController < ApplicationController
   def create
-    @poem = Poem.new("sample_title", "sample_body")
+    service = TwitterService.new
+    results = service.text_from_query(params[:query])
+
+    @poem = Poem.new("sample_title", results)
 
     render :show, :status => :created
   end
-
-  def poem_params                                                
-    params.require(:poem).permit(:user_id)        
-  end                                                             
 end

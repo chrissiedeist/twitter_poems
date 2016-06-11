@@ -1,0 +1,5 @@
+<%= form_tag("/poems", method: "post") do %>
+  <%= label_tag(:query, "Create poem about:") %>
+  <%= text_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end %>
