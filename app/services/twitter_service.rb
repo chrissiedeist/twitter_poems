@@ -9,7 +9,25 @@ class TwitterService
   end
 
   def text_from_query(query)
-    results = @client.search(query, count: 10) 
-    results.map(&:text).join("")
+    query.sub(/#/, '')
+    results = @client.search("##{query}", count: 20) 
+
+    text = results.map(&:text).map do |text| 
+      text = _remove_url(text)
+      text = _remove_retweet(text)
+      _remove_handles(text)
+    end.join("")
   end
+
+  def _remove_url(tweet)
+    tweet.gsub(/http\S*/, '')
+  end
+
+  def _remove_retweet(tweet)
+    tweet.sub(/^RT .*: /, '')
+  end
+
+   def _remove_handles(tweet)
+     tweet.gsub(/@\S*/, '')
+   end
 end
