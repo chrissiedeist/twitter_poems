@@ -3,7 +3,7 @@ require('rails_helper')
 describe TwitterService do
   describe "self.text_from_query" do
     before(:each) do
-      @twitter_service = TwitterService.new
+      @twitter_service = TwitterService
     end
 
     it "returns the text from tweets returned from a search" do
