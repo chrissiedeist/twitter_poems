@@ -9,12 +9,12 @@ class TwitterService
   NUM_TWEETS_TO_FETCH = 20
 
   def initialize
-    @client = Twitter::REST::Client.new do |config|
-      config.consumer_key = ENV['CONSUMER_KEY']
-      config.consumer_secret = ENV['CONSUMER_SECRET']
-      config.access_token = ENV['ACCESS_TOKEN']
-      config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
-    end
+    # @client = Twitter::REST::Client.new do |config|
+    #   config.consumer_key = ENV['CONSUMER_KEY']
+    #   config.consumer_secret = ENV['CONSUMER_SECRET']
+    #   config.access_token = ENV['ACCESS_TOKEN']
+    #   config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
+    # end
   end
 
   def text_from_query(query)
@@ -27,7 +27,9 @@ class TwitterService
 
   def _get_raw_results(query) 
     query = _add_hashtag_if_missing(query)
-    @client.search(query, count: NUM_TWEETS_TO_FETCH) 
+
+    TwitterHelper.authenticated_twitter_client
+      .search(query, count: NUM_TWEETS_TO_FETCH) 
   end
 
   def _add_hashtag_if_missing(query)
