@@ -63,6 +63,17 @@ describe TwitterService do
         expect(result.downcase).to match(/fun/)
         expect(result.downcase).to_not match(/@/)
       end
+
+      it "removes digits" do
+        tweet = double(:text => "@twitterhandle: 999 Saturday’s Pet of the Day is so fun @anotherhandle")
+
+        allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
+
+        result = @twitter_service.text_from_query("fun")
+
+        expect(result.downcase).to match(/fun/)
+        expect(result.downcase).to_not match(/999/)
+      end
     end
   end
 end

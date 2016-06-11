@@ -3,6 +3,7 @@ class TwitterService
     :urls => /http\S*/,
     :retweet => /^RT .*: /,
     :handles => /@\S*/,
+    :numbers => /\d/,
   }
 
   NUM_TWEETS_TO_FETCH = 20
