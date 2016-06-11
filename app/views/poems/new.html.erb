@@ -1,3 +1,7 @@
+<h1>Twitter Poem Generator</h1>
+<p>You know when you're in the mood for a haiku but can't come up with the words yourself? Let twitter help!</p>
+
+<p>Enter a word for the topic of the poem:</p>
 <%= form_tag("/poems", method: "post") do %>
   <%= label_tag(:query, "Create poem about:") %>
   <%= text_field_tag(:query) %>

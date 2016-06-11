@@ -1,7 +1,8 @@
 class Poem
-  attr_reader :raw_text
+  attr_reader :topic, :raw_text
 
-  def initialize(raw_text)
+  def initialize(topic, raw_text)
+    @topic = topic
     @raw_text = raw_text
   end
 

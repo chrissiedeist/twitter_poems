@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 describe Poem do
-  it "has raw text" do
-    poem = Poem.new("Poem body. Very Poetic")
+  it "it initialized with raw text and a topic" do
+    poem = Poem.new("music", "Twitter text about music. Musicky-music music music")
 
-    expect(poem.raw_text).to eq("Poem body. Very Poetic")
+    expect(poem.raw_text).to eq("Twitter text about music. Musicky-music music music")
+    expect(poem.topic).to eq("music")
   end
 
   describe "to_haiku" do
@@ -13,7 +14,7 @@ describe Poem do
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.= 
       TWITTER_TEXT
 
-      poem = Poem.new(raw_text)
+      poem = Poem.new("Lorem", raw_text)
 
       haiku = <<-HAIKU
 Lorem ipsum sit

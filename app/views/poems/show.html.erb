@@ -1,4 +1,7 @@
+Your poem about <%= @poem.topic %>:
 <p id="notice"><%= notice %></p>
 <p>
   <%= simple_format(@poem.to_haiku) %>
 </p>
+
+<%= button_to 'Back (Create another poem!)', new_poem_path, method: :get  %>
