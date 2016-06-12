@@ -23,7 +23,13 @@ describe TwitterService do
   describe "self.text_from_query" do
     it "returns the text from tweets returned from a search" do
       result = @twitter_service.text_from_query("ruby")
-      expect(result.downcase).to match(/ruby/)
+      expect(result).to match(/ruby/i)
+    end
+
+    it "does not raise an error if the query is an empty string" do
+      expect do
+        @twitter_service.text_from_query("")
+      end.to_not raise_error
     end
 
     it "returns nil if there are no results from twitter" do

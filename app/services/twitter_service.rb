@@ -15,20 +15,22 @@ class TwitterService
   def self.trending_topics
     results = _get_trending_topics
 
-    results.map(&:name) if results
-  end
-
-  def self._get_trending_topics
-    TwitterHelper.authenticated_twitter_client.trends(id=WOEID, options = {})
+    results ? results.map(&:name) : []
   end
 
   def self.text_from_query(query)
+    return nil unless query.present?
+
     query = _add_hashtag_if_missing(query)
     results = _get_raw_results(query)
 
     return nil unless results
 
     _get_cleaned_text(results)
+  end
+
+  def self._get_trending_topics
+    TwitterHelper.authenticated_twitter_client.trends(id=WOEID, options = {})
   end
 
   def self._get_raw_results(query) 
