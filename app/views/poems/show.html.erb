@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-<h1>A Poem about <%=@poem.topic.humanize %></h1>
+<h1>A haiku about <%=@poem.topic %></h1>
 <p>
   <%= simple_format(@poem.to_haiku) %>
 </p>
