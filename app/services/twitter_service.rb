@@ -20,6 +20,7 @@ class TwitterService
   end
 
   def self.text_from_query(query)
+    query = _add_hashtag_if_missing(query)
     results = _get_raw_results(query)
 
     return nil unless results
@@ -28,8 +29,6 @@ class TwitterService
   end
 
   def self._get_raw_results(query) 
-    query = _add_hashtag_if_missing(query)
-
     TwitterHelper.authenticated_twitter_client
       .search(query, count: NUM_TWEETS_TO_FETCH) 
   end
