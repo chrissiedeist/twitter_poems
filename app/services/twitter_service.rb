@@ -7,6 +7,17 @@ class TwitterService
   }
 
   NUM_TWEETS_TO_FETCH = 20
+  WOEID = 1 # Global 'where on earth location' ID
+
+  def self.trending_topics
+    results = _get_trending_topics
+
+    results.map(&:name) if results
+  end
+
+  def self._get_trending_topics
+    TwitterHelper.authenticated_twitter_client.trends(id=WOEID, options = {})
+  end
 
   def self.text_from_query(query)
     results = _get_raw_results(query)

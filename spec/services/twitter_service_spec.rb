@@ -1,11 +1,26 @@
 require('rails_helper')
 
 describe TwitterService do
-  describe "self.text_from_query" do
-    before(:each) do
-      @twitter_service = TwitterService
+  before(:each) do
+    @twitter_service = TwitterService
+  end
+
+  describe "self.trending_topics" do
+    it "returns an array of trending topics" do
+      result = @twitter_service.trending_topics
+      expect(result).to be_an Array
     end
 
+    it "does not blow up if there are no results" do
+      expect_any_instance_of(Twitter::REST::Client).to receive(:trends).and_return nil
+
+      expect do
+        @twitter_service.trending_topics
+      end.to_not raise_error
+    end
+  end
+
+  describe "self.text_from_query" do
     it "returns the text from tweets returned from a search" do
       result = @twitter_service.text_from_query("ruby")
       expect(result.downcase).to match(/ruby/)

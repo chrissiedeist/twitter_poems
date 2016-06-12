@@ -6,4 +6,8 @@ class PoemsController < ApplicationController
 
     render :show, :status => :created
   end
+
+  def new
+    @trending_topics = TwitterService.trending_topics || []
+  end
 end
