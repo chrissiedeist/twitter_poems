@@ -38,10 +38,27 @@ describe PoemService do
     end
 
     context "when there are insufficient syllables in the given text" do
-      it "adds filler syllables to return the desired number" do
-        too_short_sample_text = "An old"
-        poem_service = PoemService.new(too_short_sample_text)
-        expect(poem_service.get_syllables(5)).to eq("An old hm hm hm")
+      it "returns as many syllables as it can and then nil" do
+        easy_sample_text = "An old silent pond contained many frogs"
+        poem_service = PoemService.new(easy_sample_text)
+
+        expect(poem_service.get_syllables(5)).to eq("An old silent pond")
+        expect(poem_service.get_syllables(7)).to eq("contained many frogs")
+        expect(poem_service.get_syllables(7)).to eq(nil)
+      end
+    end
+
+    context "when initialized with a nil" do
+      it "returns nil" do
+        poem_service = PoemService.new(nil)
+        expect(poem_service.get_syllables(5)).to eq(nil)
+      end
+    end
+
+    context "when initialized with an empty string" do
+      it "returns nil" do
+        poem_service = PoemService.new("")
+        expect(poem_service.get_syllables(5)).to eq(nil)
       end
     end
   end

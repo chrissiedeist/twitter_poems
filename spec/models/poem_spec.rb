@@ -24,5 +24,18 @@ Consectetur do
 
       expect(poem.to_haiku).to eq(haiku.strip)
     end
+
+    it "returns an apology haiku if given no raw text" do
+      poem = Poem.new("obscurethingthatdoesntgettweetedabout", "")
+
+      expect(poem.to_haiku).to eq(Poem::DEFAULT_HAIKU)
+    end
+
+    it "returns an partial haiku if there is insufficient raw data to create a real one" do
+      poem = Poem.new("obscurethingthatdoesntgettweetedabout", "Some text, but not really enough")
+
+      haiku = "Some text, but not\nReally enough\n"
+      expect(poem.to_haiku).to eq(haiku)
+    end
   end
 end
