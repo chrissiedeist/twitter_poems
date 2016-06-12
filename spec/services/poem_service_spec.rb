@@ -5,7 +5,6 @@ describe PoemService do
     example_text = "Some text to create a poem"
 
     poem_service = PoemService.new(example_text)
-    expect(poem_service.text).to eq(example_text)
     expect(poem_service.remaining_words).to eq(["Some", "text", "to", "create", "a", "poem"])
   end
 
@@ -50,7 +49,8 @@ describe PoemService do
 
     context "when initialized with a nil" do
       it "returns nil" do
-        poem_service = PoemService.new(nil)
+        text = nil
+        poem_service = PoemService.new(text)
         expect(poem_service.get_syllables(5)).to eq(nil)
       end
     end

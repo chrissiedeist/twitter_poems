@@ -1,14 +1,21 @@
 class PoemService
-  attr_reader :text, :remaining_words
+  attr_reader :remaining_words
 
   def initialize(text)
-    @text = text || ""
-    @remaining_words = @text.split(" ") || []
+    text ||= ""
+    @remaining_words = text.split(" ")
   end
 
   def get_syllables(desired_num_syllables)
     return nil if @remaining_words.empty?
 
+    words_to_return = _get_words(desired_num_syllables)
+    @remaining_words = @remaining_words - words_to_return
+
+    words_to_return.join(" ")
+  end
+
+  def _get_words(desired_num_syllables)
     words_to_return = []
     num_syllables = 0
 
@@ -21,14 +28,7 @@ class PoemService
 
       break if num_syllables >= desired_num_syllables
     end
-
-    _remove_from_remaining(words_to_return)
-
-    words_to_return.join(" ")
-  end
-
-  def _remove_from_remaining(words_to_return)
-    @remaining_words = @remaining_words - words_to_return
+    words_to_return
   end
 
   def _count_syllables(word)
