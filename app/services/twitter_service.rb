@@ -8,12 +8,15 @@ class TwitterService
 
   NUM_TWEETS_TO_FETCH = 20
   WOEID = 1 # Global 'where on earth location' ID
+
   RATE_LIMIT_ERROR_MESSAGE = "You've hit Twitter rate limits! Come back in 15 minutes."
   BAD_REQUEST_MESSAGE = "Something went wrong with the request to Twitter. Try another topic"
   UNAUTHORIZED_MESSAGE = "Looks like the application's twitter credentials are no longer valid. Email the developer at chrissie.deist@gmail.com."
 
   def self.trending_topics
-    results = _get_trending_topics
+    results = Rails.cache.fetch("trending_topics", expires_in: 15.minutes) do
+      _get_trending_topics
+    end
 
     results ? results.map(&:name) : []
   end

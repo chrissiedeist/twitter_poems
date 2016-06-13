@@ -15,6 +15,7 @@ RSpec.describe PoemsController, type: :request do
 
   describe "new" do
     it "returns an array of trending topics from twitter" do
+      Rails.cache.delete("trending_topics")
       get '/poems/new'
 
       expect(response).to have_http_status(:ok)

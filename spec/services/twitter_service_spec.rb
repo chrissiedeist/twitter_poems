@@ -12,11 +12,19 @@ describe TwitterService do
     end
 
     it "does not blow up if there are no results" do
+      Rails.cache.delete("trending_topics")
       expect_any_instance_of(Twitter::REST::Client).to receive(:trends).and_return nil
 
       expect do
         @twitter_service.trending_topics
       end.to_not raise_error
+    end
+
+    it "caches the results" do
+      Rails.cache.delete("trending_topics")
+      expect_any_instance_of(Twitter::REST::Client).to receive(:trends).exactly(:once)
+      @twitter_service.trending_topics
+      @twitter_service.trending_topics
     end
   end
 
