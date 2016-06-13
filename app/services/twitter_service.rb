@@ -6,7 +6,7 @@ class TwitterService
     :numbers => /\d/,
   }
 
-  NUM_TWEETS_TO_FETCH = 20
+  NUM_TWEETS_TO_FETCH = 10
   WOEID = 1 # Global 'where on earth location' ID
 
   RATE_LIMIT_ERROR_MESSAGE = "You've hit Twitter rate limits! Come back in 15 minutes."
@@ -15,7 +15,7 @@ class TwitterService
 
   def self.trending_topics
     results = Rails.cache.fetch("trending_topics", expires_in: 15.minutes) do
-      _get_trending_topics
+      TwitterHelper.authenticated_twitter_client.trends(id=WOEID, options = {})
     end
 
     results ? results.map(&:name) : []
@@ -32,10 +32,6 @@ class TwitterService
     _get_cleaned_text(results)
   end
 
-  def self._get_trending_topics
-    TwitterHelper.authenticated_twitter_client.trends(id=WOEID, options = {})
-  end
-
   def self._get_raw_results(query) 
     TwitterHelper.authenticated_twitter_client
       .search(query, count: NUM_TWEETS_TO_FETCH) 
@@ -46,8 +42,8 @@ class TwitterService
   end
 
   def self._get_cleaned_text(results)
-    results.map(&:text).map do |text| 
-      _remove_unwanted_text(text)
+    results.map do |tweet|
+      _remove_unwanted_text(tweet.text)
     end.join("")
   end
 

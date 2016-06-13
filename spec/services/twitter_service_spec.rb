@@ -48,13 +48,13 @@ describe TwitterService do
     end
 
     it "adds a # in front of the query if it doesn't contain one" do
-        expect_any_instance_of(Twitter::REST::Client).to receive(:search).with("#fun", {:count => 20 })
+        expect_any_instance_of(Twitter::REST::Client).to receive(:search).with("#fun", {:count => 10 })
 
         @twitter_service.text_from_query("fun")
     end
 
     it "does not add an extra # in front of the query if already contains one" do
-        expect_any_instance_of(Twitter::REST::Client).to receive(:search).with("#fun", {:count => 20})
+        expect_any_instance_of(Twitter::REST::Client).to receive(:search).with("#fun", {:count => 10})
 
         @twitter_service.text_from_query("#fun")
     end
