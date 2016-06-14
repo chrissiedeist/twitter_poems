@@ -6,13 +6,16 @@ describe TwitterService do
   end
 
   describe "self.trending_topics" do
-    it "returns an array of trending topics" do
+    before(:each) do 
+      Rails.cache.delete("trending_topics")
+    end
+
+    it "maps the trend results to an array of names" do
       result = @twitter_service.trending_topics
-      expect(result).to be_an Array
+      expect(result).to be_an(Array)
     end
 
     it "does not blow up if there are no results" do
-      Rails.cache.delete("trending_topics")
       expect_any_instance_of(Twitter::REST::Client).to receive(:trends).and_return nil
 
       expect do
@@ -21,7 +24,6 @@ describe TwitterService do
     end
 
     it "caches the results" do
-      Rails.cache.delete("trending_topics")
       expect_any_instance_of(Twitter::REST::Client).to receive(:trends).exactly(:once)
       @twitter_service.trending_topics
       @twitter_service.trending_topics
@@ -30,8 +32,12 @@ describe TwitterService do
 
   describe "self.text_from_query" do
     it "returns the text from tweets returned from a search" do
-      result = @twitter_service.text_from_query("ruby")
-      expect(result).to match(/ruby/i)
+      tweet_1 = double(:text => "Saturday’s Pet of the Day is #fun")
+      tweet_2 = double(:text => "Fun fun fun!")
+      allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet_1, tweet_2])
+
+      result = @twitter_service.text_from_query("fun")
+      expect(result).to match("Saturday’s Pet of the Day is #funFun fun fun!")
     end
 
     it "does not raise an error if the query is an empty string" do
