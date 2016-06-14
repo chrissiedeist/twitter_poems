@@ -28,6 +28,7 @@ class PoemService
 
       break if num_syllables >= desired_num_syllables
     end
+
     words_to_return
   end
 

@@ -33,7 +33,7 @@ RSpec.describe PoemsController, type: :request do
 
         poem = assigns(:poem)
         expect(poem.to_haiku).to be_a(String)
-        expect(poem.to_haiku).to eq(Poem::DEFAULT_HAIKU)
+        expect(poem.to_haiku).to eq(Poem::DEFAULT_POEMS[:haiku])
       end
     end
 
