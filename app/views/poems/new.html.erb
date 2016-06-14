@@ -6,10 +6,12 @@
   <%= text_field_tag(:query) %>
   <%= submit_tag("Create your poem") %>
 <% end %>
-<p>(If you need ideas, the following are popular topics trending on twitter now...)</p>
-<ul>
-  <% @trending_topics.each do |topic| %>
-  <li><%= topic %></li>
-  <% end %>
-</ul>
 
+<% unless @trending_topics.empty? %>
+  <p>(If you need ideas, the following are popular topics trending on twitter now...)</p>
+  <ul>
+    <% @trending_topics.each do |topic| %>
+    <li><%= topic %></li>
+    <% end %>
+  </ul>
+<% end %>
