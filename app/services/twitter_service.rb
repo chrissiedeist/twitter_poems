@@ -10,7 +10,7 @@ class TwitterService
   WOEID = 1 # Global 'where on earth location' ID
 
   RATE_LIMIT_ERROR_MESSAGE = "You've hit Twitter rate limits! Come back in 15 minutes."
-  BAD_REQUEST_MESSAGE = "Something went wrong with the request to Twitter. Try another topic"
+  BAD_REQUEST_MESSAGE = "Twitter can't process that query. Try another topic"
   UNAUTHORIZED_MESSAGE = "Looks like the application's twitter credentials are no longer valid. Email the developer at chrissie.deist@gmail.com."
 
   def self.trending_topics

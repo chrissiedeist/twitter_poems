@@ -1,4 +1,5 @@
 class PoemsController < ApplicationController
+  rescue_from Twitter::Error, with: :bad_request
   rescue_from Twitter::Error::Forbidden, with: :bad_request
   rescue_from Twitter::Error::BadRequest, with: :bad_request
   rescue_from Twitter::Error::TooManyRequests, with: :too_many_requests

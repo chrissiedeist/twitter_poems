@@ -30,6 +30,15 @@ RSpec.describe PoemsController, type: :controller do
       expect(response).to render_template(:error)
       expect(flash[:error]).to include(TwitterService::RATE_LIMIT_ERROR_MESSAGE)
     end
+
+    it "handles any other errors from Twitter" do
+      TwitterService.stub(:text_from_query).and_raise(Twitter::Error)
+
+      post :create, :query => "ruby" 
+
+      expect(response).to render_template(:error)
+      expect(flash[:error]).to include(TwitterService::BAD_REQUEST_MESSAGE)
+    end
   end
 
   describe "new" do
