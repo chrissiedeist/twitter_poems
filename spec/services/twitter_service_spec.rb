@@ -1,17 +1,13 @@
 require('rails_helper')
 
 describe TwitterService do
-  before(:each) do
-    @twitter_service = TwitterService
-  end
-
   describe "self.trending_topics" do
     before(:each) do 
       Rails.cache.delete("trending_topics")
     end
 
     it "maps the trend results to an array of names" do
-      result = @twitter_service.trending_topics
+      result = TwitterService.trending_topics
       expect(result).to be_an(Array)
     end
 
@@ -20,7 +16,7 @@ describe TwitterService do
 
       results = nil
       expect do
-        results = @twitter_service.trending_topics
+        results = TwitterService.trending_topics
       end.to_not raise_error
 
       expect(results).to eq([])
@@ -28,8 +24,8 @@ describe TwitterService do
 
     it "caches the results" do
       expect_any_instance_of(Twitter::REST::Client).to receive(:trends).exactly(:once)
-      @twitter_service.trending_topics
-      @twitter_service.trending_topics
+      TwitterService.trending_topics
+      TwitterService.trending_topics
     end
   end
 
@@ -39,33 +35,33 @@ describe TwitterService do
       tweet_2 = double(:text => "Fun fun fun!")
       allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet_1, tweet_2])
 
-      result = @twitter_service.text_from_query("fun")
+      result = TwitterService.text_from_query("fun")
       expect(result).to match("Saturday’s Pet of the Day is #funFun fun fun!")
     end
 
     it "does not raise an error if the query is an empty string" do
       expect do
-        @twitter_service.text_from_query("")
+        TwitterService.text_from_query("")
       end.to_not raise_error
     end
 
     it "returns nil if there are no results from twitter" do
         expect_any_instance_of(Twitter::REST::Client).to receive(:search).and_return nil
 
-        result = @twitter_service.text_from_query("xasdfasdgagds")
+        result = TwitterService.text_from_query("xasdfasdgagds")
         expect(result).to be_nil
     end
 
     it "adds a # in front of the query if it doesn't contain one" do
         expect_any_instance_of(Twitter::REST::Client).to receive(:search).with("#fun", {:count => 10 })
 
-        @twitter_service.text_from_query("fun")
+        TwitterService.text_from_query("fun")
     end
 
     it "does not add an extra # in front of the query if already contains one" do
         expect_any_instance_of(Twitter::REST::Client).to receive(:search).with("#fun", {:count => 10})
 
-        @twitter_service.text_from_query("#fun")
+        TwitterService.text_from_query("#fun")
     end
 
     context "when tweets contain unwanted text" do
@@ -74,7 +70,7 @@ describe TwitterService do
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
-        result = @twitter_service.text_from_query("fun")
+        result = TwitterService.text_from_query("fun")
 
         expect(result.downcase).to match(/fun/)
         expect(result.downcase).to_not match(/http/)
@@ -85,7 +81,7 @@ describe TwitterService do
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
-        result = @twitter_service.text_from_query("fun")
+        result = TwitterService.text_from_query("fun")
 
         expect(result.downcase).to match(/fun/)
         expect(result.downcase).to_not match(/^RT/)
@@ -96,7 +92,7 @@ describe TwitterService do
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
-        result = @twitter_service.text_from_query("fun")
+        result = TwitterService.text_from_query("fun")
 
         expect(result.downcase).to match(/fun/)
         expect(result.downcase).to_not match(/@/)
@@ -107,7 +103,7 @@ describe TwitterService do
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
-        result = @twitter_service.text_from_query("fun")
+        result = TwitterService.text_from_query("fun")
 
         expect(result.downcase).to match(/fun/)
         expect(result.downcase).to_not match(/999/)
