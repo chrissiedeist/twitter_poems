@@ -18,9 +18,12 @@ describe TwitterService do
     it "does not blow up if there are no results" do
       expect_any_instance_of(Twitter::REST::Client).to receive(:trends).and_return nil
 
+      results = nil
       expect do
-        @twitter_service.trending_topics
+        results = @twitter_service.trending_topics
       end.to_not raise_error
+
+      expect(results).to eq([])
     end
 
     it "caches the results" do

@@ -32,7 +32,7 @@ Consectetur do
         expect(poem.to_haiku).to eq(Poem::DEFAULT_POEMS[:haiku])
       end
 
-      it "returns  haiku if given nil for raw text" do
+      it "returns the default haiku if given nil for raw text" do
         poem = Poem.new("obscurethingthatdoesntgettweetedabout", nil)
 
         expect(poem.to_haiku).to eq(Poem::DEFAULT_POEMS[:haiku])
