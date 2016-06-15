@@ -25,6 +25,7 @@ class TwitterService
     return nil unless query.present?
 
     query = _add_hashtag_if_missing(query)
+
     results = _get_raw_results(query)
 
     return nil unless results
@@ -42,7 +43,7 @@ class TwitterService
   end
 
   def self._get_cleaned_text(results)
-    results.map do |tweet|
+    results.take(NUM_TWEETS_TO_FETCH).map do |tweet|
       _remove_unwanted_text(tweet.text)
     end.join("")
   end
