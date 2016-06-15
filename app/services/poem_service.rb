@@ -10,7 +10,6 @@ class PoemService
     return nil if @remaining_words.empty?
 
     words_to_return = _get_words(desired_num_syllables)
-    @remaining_words = @remaining_words - words_to_return
 
     words_to_return.join(" ")
   end
@@ -19,8 +18,9 @@ class PoemService
     words_to_return = []
     num_syllables = 0
 
-    @remaining_words.each do |word|
-      new_syllables = _count_syllables(word)
+    until @remaining_words.empty? do
+      word = @remaining_words.shift
+      new_syllables =_count_syllables(word)
       if num_syllables + new_syllables <= desired_num_syllables
         words_to_return << word
         num_syllables += new_syllables

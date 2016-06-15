@@ -18,8 +18,8 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 
       haiku = <<-HAIKU
 Lorem ipsum sit
-Dolor amet, elit, sed
-Consectetur do 
+Amet, consectetur sed
+Do eiusmod ut
       HAIKU
 
       expect(poem.to_haiku).to eq(haiku.strip)

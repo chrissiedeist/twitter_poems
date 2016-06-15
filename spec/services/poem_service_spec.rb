@@ -32,7 +32,7 @@ describe PoemService do
         poem_service = PoemService.new(uneven_sample_text)
 
         expect(poem_service.get_syllables(5)).to eq("An old silent went")
-        expect(poem_service.remaining_words).to eq(["farmer", "to", "the", "store"])
+        expect(poem_service.remaining_words).to eq(["to", "the", "store"])
       end
     end
 
