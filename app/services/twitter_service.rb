@@ -26,11 +26,15 @@ class TwitterService
 
     query = _add_hashtag_if_missing(query)
 
-    results = _get_raw_results(query)
+    results = _log_around("Get raw results") do
+      _get_raw_results(query)
+    end
 
     return nil unless results
 
-    _get_cleaned_text(results)
+    _log_around("Get cleaned text") do
+      _get_cleaned_text(results)
+    end
   end
 
   def self._get_raw_results(query) 
@@ -51,6 +55,14 @@ class TwitterService
   def self._remove_unwanted_text(tweet)
     regex = Regexp.union(REGEXES_TO_REMOVE_FROM_TEXT.values)
 
-    tweet.gsub(regex, '')
+    _log_around("Remove unwanted text") { tweet.gsub(regex, '') }
+  end
+
+  def self._log_around(name, &block)
+    start_time = Time.now
+    Rails.logger.info("Starting #{name}")
+    result = block.call
+    Rails.logger.info("Finished #{name} after #{Time.now - start_time} seconds")
+    result
   end
 end

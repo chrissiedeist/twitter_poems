@@ -9,7 +9,9 @@ class PoemService
   def get_syllables(desired_num_syllables)
     return nil if @remaining_words.empty?
 
-    words_to_return = _get_words(desired_num_syllables)
+    words_to_return = _log_around("Getting #{desired_num_syllables}") do
+      _get_words(desired_num_syllables)
+    end
 
     words_to_return.join(" ")
   end
@@ -39,5 +41,13 @@ class PoemService
     word.sub!(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '')
     word.sub!(/^y/, '')
     word.scan(/[aeiouy]{1,2}/).size
+  end
+
+  def _log_around(name, &block)
+    start_time = Time.now
+    Rails.logger.info("Starting #{name}")
+    result = block.call
+    Rails.logger.info("Finished #{name} after #{Time.now - start_time} seconds")
+    result
   end
 end
