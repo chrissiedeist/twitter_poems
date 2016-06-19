@@ -31,8 +31,8 @@ describe TwitterService do
 
   describe "self.text_from_query" do
     it "returns the text from tweets returned from a search" do
-      tweet_1 = double(:text => "Saturday’s Pet of the Day is #fun")
-      tweet_2 = double(:text => "Fun fun fun!")
+      tweet_1 = { :text => "Saturday’s Pet of the Day is #fun" }
+      tweet_2 = { :text => "Fun fun fun!" }
       allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet_1, tweet_2])
 
       result = TwitterService.text_from_query("fun")
@@ -66,7 +66,7 @@ describe TwitterService do
 
     context "when tweets contain unwanted text" do
       it "removes urls from text" do
-        tweet = double(:text => "Saturday’s Pet of the Day is #fun Tiki-a #pineapple #conure -talk of him\nhttps://t.co/3S54PjvAne\n#petoftheday #pets https://t.co/j26c0cUwqw")
+        tweet = { :text => "Saturday’s Pet of the Day is #fun Tiki-a #pineapple #conure -talk of him\nhttps://t.co/3S54PjvAne\n#petoftheday #pets https://t.co/j26c0cUwqw" }
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
@@ -77,7 +77,7 @@ describe TwitterService do
       end
 
       it "removes retweet portion of tweet" do
-        tweet = double(:text => "RT @twitterhandle: Saturday’s Pet of the Day is so fun https://t.co/3S54PjvAne\n#petoftheday #pets https://t.co/j26c0cUwqw")
+        tweet = { :text => "RT @twitterhandle: Saturday’s Pet of the Day is so fun https://t.co/3S54PjvAne\n#petoftheday #pets https://t.co/j26c0cUwqw" }
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
@@ -88,7 +88,7 @@ describe TwitterService do
       end
 
       it "removes twitter handles" do
-        tweet = double(:text => "@twitterhandle: Saturday’s Pet of the Day is so fun @anotherhandle")
+        tweet = { :text => "@twitterhandle: Saturday’s Pet of the Day is so fun @anotherhandle" }
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 
@@ -99,7 +99,7 @@ describe TwitterService do
       end
 
       it "removes digits" do
-        tweet = double(:text => "@twitterhandle: 999 Saturday’s Pet of the Day is so fun @anotherhandle")
+        tweet = { :text => "@twitterhandle: 999 Saturday’s Pet of the Day is so fun @anotherhandle" }
 
         allow_any_instance_of(Twitter::REST::Client).to receive(:search).and_return([tweet])
 

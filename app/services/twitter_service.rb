@@ -6,7 +6,7 @@ class TwitterService
     :numbers => /\d/,
   }
 
-  NUM_TWEETS_TO_FETCH = 10
+  NUM_TWEETS_TO_FETCH = 100
   WOEID = 1 # Global 'where on earth location' ID
 
   RATE_LIMIT_ERROR_MESSAGE = "You've hit Twitter rate limits! Come back in 15 minutes."
@@ -34,8 +34,9 @@ class TwitterService
   end
 
   def self._get_raw_results(query) 
-    TwitterHelper.authenticated_twitter_client
-      .search(query, count: NUM_TWEETS_TO_FETCH) 
+    response = TwitterHelper.new.search(query, count: NUM_TWEETS_TO_FETCH)
+    return nil unless response.body
+    JSON.parse(response.body)["statuses"]
   end
 
   def self._add_hashtag_if_missing(query)
@@ -43,8 +44,8 @@ class TwitterService
   end
 
   def self._get_cleaned_text(results)
-    results.take(NUM_TWEETS_TO_FETCH).map do |tweet|
-      _remove_unwanted_text(tweet.text)
+    results.map do |tweet|
+      _remove_unwanted_text(tweet[:text])
     end.join("")
   end
 
