@@ -215,5 +215,5 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   spring
   turbolinks
-  twitter
+  twitter (= 5.8.0)
   uglifier (>= 1.3.0)

@@ -1,3 +1,15 @@
+module Twitter
+  module REST
+    module Search
+      def search(q, options = {})
+        request = Twitter::Request.new(self, :get, '/1.1/search/tweets.json', options.merge(:q => q))
+        response = get(request.path, request.options).body
+        response[:statuses]
+      end
+    end
+  end
+end
+
 class TwitterService
   REGEXES_TO_REMOVE_FROM_TEXT = {
     :urls => /http\S*/,
@@ -43,8 +55,8 @@ class TwitterService
   end
 
   def self._get_cleaned_text(results)
-    results.take(NUM_TWEETS_TO_FETCH).map do |tweet|
-      _remove_unwanted_text(tweet.text)
+    results.map do |tweet|
+      _remove_unwanted_text(tweet[:text])
     end.join("")
   end
 
